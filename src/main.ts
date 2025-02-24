@@ -14,9 +14,7 @@ const resetBtn = document.querySelector<HTMLButtonElement>('#reset')!
 
 createEffect(() => {
     if (countValue() <= 0) {
-        count.innerText = COUNT_INITIAL_MESSAGE
-        fun.innerText = FUN_INITIAL_MESSAGE
-        resetBtn.disabled = true
+        init()
     } else {
         resetBtn.disabled = false
         count.innerText = `👉 ${countValue()} 👈`
@@ -99,6 +97,12 @@ function increment() {
 
 function reset() {
     setCountValue(0)
+    resetBtn.disabled = true
+    init()
+}
+
+function init() {
+    resetBtn.disabled = true
     count.innerText = COUNT_INITIAL_MESSAGE
     fun.innerText = FUN_INITIAL_MESSAGE
 }
