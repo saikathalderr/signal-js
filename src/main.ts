@@ -3,14 +3,22 @@ import {createEffect, createSignal} from "./signal/signal.ts";
 
 const [countValue, setCountValue] = createSignal(0)
 
+const COUNT_INITIAL_MESSAGE = '👀 Bro, press the button 👇'
+const FUN_INITIAL_MESSAGE = '""'
+
 const count = document.querySelector<HTMLSpanElement>('#count')!
 const fun = document.querySelector<HTMLSpanElement>('#fun')!
+
 const btn = document.querySelector<HTMLButtonElement>('#btn')!
+const resetBtn = document.querySelector<HTMLButtonElement>('#reset')!
 
 createEffect(() => {
     if (countValue() <= 0) {
-        count.innerText = '👀 Bro, press the button 👇'
+        count.innerText = COUNT_INITIAL_MESSAGE
+        fun.innerText = FUN_INITIAL_MESSAGE
+        resetBtn.disabled = true
     } else {
+        resetBtn.disabled = false
         count.innerText = `👉 ${countValue()} 👈`
 
         switch (countValue()) {
@@ -89,4 +97,12 @@ function increment() {
     setCountValue(countValue() + 1)
 }
 
+function reset() {
+    setCountValue(0)
+    count.innerText = COUNT_INITIAL_MESSAGE
+    fun.innerText = FUN_INITIAL_MESSAGE
+}
+
 btn.addEventListener('click', increment)
+resetBtn.addEventListener('click', reset)
+
