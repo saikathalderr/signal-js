@@ -7,13 +7,13 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app" class="w-96 mx-auto my-8">
+    <div id="app" class="w-6/12 mx-auto my-8 font-mono">
         <h1 class="text-3xl font-bold">
           Pokemons 🔥
         </h1>
-      <div class="flex">
-        <div id="list"></div>
-        <div id="info"></div>
+      <div class="grid grid-cols-2 divide-x-1 divide-dashed">
+        <div id="list" class="bg-red-50 p-5"></div>
+        <div id="info" class="bg-green-50 p-5"></div>
       </div>
     </div>
     <script type="module" src="/src/main.ts"></script>
