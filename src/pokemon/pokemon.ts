@@ -1,6 +1,6 @@
 import {BasePokemon, Pokemon} from "./types.ts";
 
-const POKEMONS_API_URL = 'https://pokeapi.co/api/v2/pokemon?limit=10'
+const POKEMONS_API_URL = 'https://pokeapi.co/api/v2/pokemon?limit=100'
 
 interface FetchBasePokemonsResponse {
     results: BasePokemon[]

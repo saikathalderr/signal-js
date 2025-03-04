@@ -5,9 +5,12 @@ import {fetchAllPokemons} from "./pokemon/pokemon.ts";
 
 const list = document.querySelector<HTMLDivElement>('#list')!
 const info = document.querySelector<HTMLDivElement>('#info')!
+const search = document.querySelector<HTMLInputElement>('#search')!
 
 const [pokemons, setPokemons] = createSignal<Pokemon[]>([])
 const [selectedPokemon, setSelectedPokemon] = createSignal<Pokemon | null>(null)
+const [searchText, setSearchText] = createSignal<string>('')
+const [loading, setLoading] = createSignal<boolean>(false)
 
 createEffect(() => {
     list.innerHTML = pokemons().map(pokemon => `
@@ -30,7 +33,7 @@ createEffect(() => {
     if (selectedPokemon()) {
         info.innerHTML = `
             <img src="${selectedPokemon()?.sprites.front_default}" alt="${selectedPokemon()?.name}" />
-            <h2 class="text-xl font-bold">${selectedPokemon()?.name}</h2>
+            <h2 class="text-xl font-bold h-10">${selectedPokemon()?.name}</h2>
             <div>Height - ${selectedPokemon()?.height}</div>
             <div>Weight - ${selectedPokemon()?.weight}</div>
         `
@@ -39,6 +42,42 @@ createEffect(() => {
     }
 })
 
+createEffect(() => {
+    if (searchText()) {
+        const searchResult = searchPokemon(searchText())
+        if (searchResult.length > 0) {
+            setPokemons(searchResult)
+        }
+    }
+})
 
-fetchAllPokemons().then(setPokemons)
+createEffect(() => {
+    if (loading()) {
+        list.innerHTML = 'Loading...'
+    }
+})
 
+search.addEventListener('input', (e: Event) => {
+    const value = (e.target as HTMLInputElement).value.toLowerCase()
+    if (value.length <= 2) {
+        init()
+        return
+    }
+    setSearchText(value)
+})
+
+function searchPokemon(key: string) {
+    return pokemons().filter(pokemon => pokemon.name.includes(key))
+}
+
+function init() {
+  setLoading(true)
+
+    fetchAllPokemons().then(pokemons => {
+        setPokemons(pokemons)
+    })
+    .finally(() => setLoading(false))
+
+}
+
+init()
